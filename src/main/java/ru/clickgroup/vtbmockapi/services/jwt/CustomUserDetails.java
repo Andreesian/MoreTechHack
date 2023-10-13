@@ -1,82 +1,62 @@
 package ru.clickgroup.vtbmockapi.services.jwt;
 
-import com.fullstatestudio.macgicman.service.jwt.impl.UserDetailServiceImpl;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.web.filter.GenericFilterBean;
+//import com.fullstatestudio.macgicman.entity.UserEntity;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 
-import java.io.IOException;
+@Data
+public class CustomUserDetails implements UserDetails {
+    private String login;
+    private String password;
+    private UserEntity user;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.util.StringUtils.hasText;
+    private String token;
 
-@Component
-@RequiredArgsConstructor
-@Slf4j
-public class JwtFilter extends GenericFilterBean {
+    private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static final int BEGIN_INDEX = 7;
-
-    @Setter
-    @Value("#{'${auth.whitelist}'.split(' ')}")
-    private String[] AUTH_WHITELIST;
-    private final JwtProvider jwtProvider;
-
-    private final UserDetailServiceImpl userDetailService;
-
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException, ServletException {
-        boolean isInWhiteList = false;
-        String token = null;
-        String path;
-        if (servletRequest instanceof HttpServletRequest) {
-            path = ((HttpServletRequest) servletRequest).getServletPath();
-            token = getTokenFromRequest((HttpServletRequest) servletRequest);
-            log.debug("Current request url: " + path);
-            AntPathMatcher matcher = new AntPathMatcher();
-            for (String s : AUTH_WHITELIST) {
-                if (matcher.match(s, path)) {
-                    isInWhiteList = true;
-                }
-            }
-        }
-
-
-        if (token != null && !isInWhiteList && jwtProvider.validateToken(token)) {
-            String userLogin = jwtProvider.getLoginFromToken(token);
-            path = ((HttpServletRequest) servletRequest).getServletPath();
-            if (path.contains("/validate-token")) {
-                log.debug(userLogin + " touched: " + path);
-            } else {
-                log.info(userLogin + " touched: " + path);
-            }
-            CustomUserDetails customUserDetails = userDetailService.loadUserByUsername(userLogin);
-            customUserDetails.setToken(token);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        filterChain.doFilter(servletRequest, servletResponse);
-
+    public static CustomUserDetails fromUserEntityToCustomUserDetails(UserEntity user) {
+        CustomUserDetails c = new CustomUserDetails();
+        c.login = user.getLogin();
+        c.password = user.getPassword();
+        c.user = user;
+        return c;
     }
 
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(BEGIN_INDEX);
-        }
-        return null;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

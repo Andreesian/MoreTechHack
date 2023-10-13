@@ -1,6 +1,6 @@
 package ru.clickgroup.vtbmockapi.services.jwt;
 
-import com.fullstatestudio.macgicman.service.jwt.impl.UserDetailServiceImpl;
+import ru.clickgroup.vtbmockapi.services.jwt.impl.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
