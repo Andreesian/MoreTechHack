@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/atms")
 public class AtmProvideController {
 
+    @Autowired
     private AtmRepository atmRepository;
 
     @GetMapping

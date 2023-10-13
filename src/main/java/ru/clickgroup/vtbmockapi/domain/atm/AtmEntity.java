@@ -23,6 +23,6 @@ public class AtmEntity {
     private boolean allDay;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "atm_services", joinColumns = @JoinColumn(name = "atm_id"))
+    //@JoinTable(name = "atm_services", joinColumns = @JoinColumn(name = "atm_id"))
     private List<Service> services;
 }
