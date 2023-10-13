@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://188.120.235.15:5432/vtbmock
+    username: flareon
+    password: Byzb4QHquHjiyNN
