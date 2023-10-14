@@ -10,7 +10,7 @@ import ru.clickgroup.vtbmockapi.repo.OfficeRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Offices")
+@RequestMapping("/offices")
 public class OfficeProvideController {
 
     private OfficeRepository OfficeRepository;
