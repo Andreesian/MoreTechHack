@@ -90,5 +90,6 @@ public class AuthService {
         ue.setName(urd.getName());
         ue.setLastName(urd.getLastName());
         ue.setPassword(passwordEncoder.encode(urd.getPassword()));
+        return ue;
     }
 }
