@@ -2,15 +2,14 @@ package ru.clickgroup.vtbmockapi.domain.atm;
 
 import jakarta.persistence.*;
 import lombok.Data;
-//import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
 @Table(name = "atm")
 @Data
-//@RepositoryRestResource
 public class AtmEntity {
 
     @Id
@@ -22,39 +21,48 @@ public class AtmEntity {
     private double longitude;
     private boolean allDay;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    //@JoinTable(name = "atm_services", joinColumns = @JoinColumn(name = "atm_id"))
-    private List<Service> services;
+    @ElementCollection
+    @CollectionTable(name = "atm_services", joinColumns = @JoinColumn(name = "atm_id"))
+    @MapKeyColumn(name = "service_name")
+    @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyClass(ServiceEnum.class)
+    private Map<ServiceEnum, ServiceDetails> services;
 
-    public String getAddress() {
-        return address;
+    public void addService(ServiceEnum serviceEnum, ServiceDetails details) {
+        if (services == null) {
+            services = new HashMap<>();
+        }
+        services.put(serviceEnum, details);
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public enum ServiceEnum {
+        wheelchair,
+        blind,
+        nfcForBankCards,
+        qrRead,
+        supportsUsd,
+        supportsChargeRub,
+        supportsEur,
+        supportsRub
     }
 
-    public double getLatitude() {
-        return latitude;
+    @Embeddable
+    public static class ServiceDetails {
+        private YourServiceCapability serviceCapability;
+        private YourServiceActivity serviceActivity;
+
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public enum YourServiceCapability {
+        UNKNOWN,
+        SUPPORTED,
+        UNSUPPORTED
     }
 
-    public double getLongitude() {
-        return longitude;
+    public enum YourServiceActivity {
+        UNKNOWN,
+        AVAILABLE,
+        UNAVAILABLE
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public boolean isAllDay() {
-        return allDay;
-    }
-
-    public void setAllDay(boolean allDay) {
-        this.allDay = allDay;
-    }
 }
