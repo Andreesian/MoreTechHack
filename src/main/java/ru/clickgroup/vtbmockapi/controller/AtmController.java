@@ -48,7 +48,7 @@ public class AtmController {
     public List<AtmEntity> getClosestAtms(@RequestBody Point point) {
         List<AtmEntity> atms = atmService.getAllAtms();
         atms.sort(Comparator.comparingDouble(a -> calculateDistance(a, point)));
-        return atms.subList(0, 1);
+        return atms.subList(0, 4);
     }
 
     @GetMapping
