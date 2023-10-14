@@ -1,8 +1,8 @@
 version: '3.7'
 services:
-  magic-man:
+  more-tech-backend:
     image: more-tech-backend:latest
-    container_name: magic-man
+    container_name: more-tech-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://188.120.235.15:5432/vtbmock
       SPRING_DATASOURCE_USERNAME: flareon
