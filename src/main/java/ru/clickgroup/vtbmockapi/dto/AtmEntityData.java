@@ -1,30 +1,16 @@
-package ru.clickgroup.vtbmockapi.domain.atm;
+package ru.clickgroup.vtbmockapi.dto;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import java.util.Map;
 
-import java.util.List;
-import java.util.UUID;
-
-@Entity
-@Table(name = "atm")
-@Data
-@RepositoryRestResource
-public class AtmEntity {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
-
+public class AtmEntityData {
     private String address;
     private double latitude;
     private double longitude;
     private boolean allDay;
+    private Map<String, AtmServiceData> services;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    //@JoinTable(name = "atm_services", joinColumns = @JoinColumn(name = "atm_id"))
-    private List<Service> services;
+    // Геттеры и сеттеры
+
 
     public String getAddress() {
         return address;
@@ -56,5 +42,13 @@ public class AtmEntity {
 
     public void setAllDay(boolean allDay) {
         this.allDay = allDay;
+    }
+
+    public Map<String, AtmServiceData> getServices() {
+        return services;
+    }
+
+    public void setServices(Map<String, AtmServiceData> services) {
+        this.services = services;
     }
 }

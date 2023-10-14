@@ -1,14 +1,22 @@
 package ru.clickgroup.vtbmockapi.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.clickgroup.vtbmockapi.domain.atm.AtmEntity;
+import ru.clickgroup.vtbmockapi.domain.atm.Atm;
+import ru.clickgroup.vtbmockapi.domain.atm.AtmService;
+import ru.clickgroup.vtbmockapi.dto.AtmData;
+import ru.clickgroup.vtbmockapi.dto.AtmEntityData;
+import ru.clickgroup.vtbmockapi.dto.AtmServiceData;
+import ru.clickgroup.vtbmockapi.repo.AtmEntityRepository;
 import ru.clickgroup.vtbmockapi.repo.AtmRepository;
+import ru.clickgroup.vtbmockapi.repo.AtmServiceRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/atms")
@@ -16,32 +24,32 @@ public class AtmProvideController {
 
     @Autowired
     private AtmRepository atmRepository;
+    @Autowired
+    private AtmServiceRepository atmServiceRepository;
 
-    @GetMapping
-    public List<AtmEntity> getAllAtms() {
-        return atmRepository.findAll();
-    }
+    @PostMapping("/import")
+    public ResponseEntity<String> importAtms(@RequestBody String atmData) {
+        System.out.println(atmData.getAtmEntityData());
+        AtmEntityData atmEntityData = atmData.getAtmEntityData();
+        Atm atm = new Atm();
+        atm.setAllDay(atmEntityData.isAllDay());
+        atm.setLatitude(atmEntityData.getLatitude());
+        atm.setLongitude(atmEntityData.getLongitude());
+        atm.setAddress(atmEntityData.getAddress());
 
-    @PostMapping("/import-atms")
-    public String importATMs(@RequestBody String jsonData) {
-        try {
-            JsonParser parser = new JsonParser();
-            JsonObject data = (JsonObject) parser.parse(jsonData);
-            JsonArray atms = data.getAsJsonArray("atms");
+        atmRepository.save(atm);
 
-            for (int i = 0; i < atms.size(); i++) {
-                JsonObject atmData = atms.get(i).getAsJsonObject();
-                AtmEntity atm = new AtmEntity();
-                atm.setAddress(atmData.get("address").getAsString());
-                atm.setLatitude(atmData.get("latitude").getAsDouble());
-                atm.setLongitude(atmData.get("longitude").getAsDouble());
-                atm.setAllDay(atmData.get("allDay").getAsBoolean());
-                atmRepository.save(atm);
-            }
-
-            return "Данные успешно импортированы в базу данных.";
-        } catch (Exception e) {
-            return "Ошибка при импорте данных: " + e.getMessage();
+        Map<String, AtmServiceData> services = atmEntityData.getServices();
+        for (Map.Entry<String, AtmServiceData> entry : services.entrySet()) {
+            AtmServiceData serviceData = entry.getValue();
+            AtmService atmService = new AtmService();
+            atmService.setName(entry.getKey());
+            atmService.setServiceCapability(serviceData.getServiceCapability());
+            atmService.setServiceActivity(serviceData.getServiceActivity());
+            atmService.setAtm(atm);
+            atmServiceRepository.save(atmService);
         }
+
+        return ResponseEntity.ok("Данные успешно импортированы в базу данных.");
     }
 }
