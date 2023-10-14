@@ -1,5 +1,7 @@
 package ru.clickgroup.vtbmockapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ public class QueryController {
     private FalconService falconService;
 
     @PostMapping("/query")
+    @Operation(summary = "Запромтить вопрос в gpt систему", security = @SecurityRequirement(name = "bearerAuth"))
     public String myEndpoint(@RequestBody Query query) {
         String result = falconService.getActionAndCategory(query);
         return result;

@@ -43,6 +43,7 @@ public class AtmController {
         return degree * Math.PI / 180;
     }
     @PostMapping("/closest")
+    @Operation(summary = "Получить ближайшие банкоматы", security = @SecurityRequirement(name = "bearerAuth"))
     public List<AtmEntity> getClosestAtms(@RequestBody Point point) {
         List<AtmEntity> atms = atmService.getAllAtms();
         atms.sort(Comparator.comparingDouble(a -> calculateDistance(a, point)));
@@ -50,6 +51,7 @@ public class AtmController {
     }
 
     @GetMapping
+    @Operation(summary = "Получить все банкоматы", security = @SecurityRequirement(name = "bearerAuth"))
     public List<AtmEntity> getAllAtms() {
         return atmService.getAllAtms();
     }
