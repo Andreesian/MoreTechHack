@@ -2,6 +2,7 @@ package ru.clickgroup.vtbmockapi.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import ru.clickgroup.vtbmockapi.domain.falcon.Response;
 @RequiredArgsConstructor
 public class FalconService {
 
+    @Value("${services.falcon.url}")
+    private String falconEndpointUrl;
+
     static String responseTemplate = "answer in the format of json depending on what user wants to do as following template:\n" +
             "{\n" +
             "\"action\":\"\",\n" +
@@ -25,7 +29,7 @@ public class FalconService {
     public String getActionAndCategory(Query data) {
         data.setText(FalconService.responseTemplate + data.getText());
         HttpEntity<Query> entity = new HttpEntity<>(data);
-        ResponseEntity<Response> response = restTemplate.postForEntity("http://localhost:5000/ask", entity, Response.class);
+        ResponseEntity<Response> response = restTemplate.postForEntity(falconEndpointUrl + "/ask", entity, Response.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().getResult();
         } else {
@@ -35,7 +39,7 @@ public class FalconService {
 
     public String sendPostRequest(Query data) {
         HttpEntity<Query> entity = new HttpEntity<>(data);
-        ResponseEntity<Response> response = restTemplate.postForEntity("http://localhost:5000/ask", entity, Response.class);
+        ResponseEntity<Response> response = restTemplate.postForEntity(falconEndpointUrl+ "/ask", entity, Response.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody().getResult();

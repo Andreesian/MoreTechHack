@@ -8,3 +8,8 @@ spring:
     hibernate.ddl-auto: none
 
 auth.whitelist: /error /v2/api-docs/** /v3/api-docs/** /swagger-resources/** /favicon.ico /swagger-ui.html /swagger-ui/** / /auth/email /auth/phone /actuator/**
+
+
+services:
+  falcon:
+    url: ...

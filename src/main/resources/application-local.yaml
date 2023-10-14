@@ -7,3 +7,6 @@ spring:
 jwt.secret: mymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecret
 
 
+services:
+  falcon:
+    url: http://localhost:5000
