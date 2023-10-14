@@ -10,10 +10,8 @@ services:
       JWT_SECRET: mymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecret
       SERVICES_FALCON_URL: http://localhost:5000
     ports:
-      - 9092:9092
+      - 9012:9012
     restart: always
-    depends_on:
-      - db
     networks:
       - more-tech-backend-network
 
