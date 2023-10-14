@@ -3,12 +3,14 @@ package ru.clickgroup.vtbmockapi.services;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.clickgroup.vtbmockapi.controller.dto.in.AuthDtoEmail;
 import ru.clickgroup.vtbmockapi.controller.dto.in.AuthDtoPhone;
+import ru.clickgroup.vtbmockapi.controller.dto.in.UserRegistrationDto;
 import ru.clickgroup.vtbmockapi.controller.dto.out.AuthSuccessOut;
 import ru.clickgroup.vtbmockapi.domain.user.UserEntity;
 import ru.clickgroup.vtbmockapi.repo.UserEntityRepository;
@@ -75,4 +77,13 @@ public class AuthService {
         log.debug("Current user is: " + user.getLogin());
         return user;
     }
+
+    public AuthSuccessOut authNewUser(UserRegistrationDto urd) {
+        throw new NotImplementedException();
+    }
+
+//    UserEntity conver(UserRegistrationDto urd){
+//        UserEntity ue = new UserEntity();
+//        ue.setEmail(urd.ged);
+//    }
 }

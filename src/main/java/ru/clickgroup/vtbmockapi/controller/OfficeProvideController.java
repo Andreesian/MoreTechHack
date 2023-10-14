@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/offices")
 @Tag( name = "OFFICE")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OfficeProvideController {
 
     @Autowired

@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/atms")
 @Tag(name = "ATM")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AtmController {
 
     private final AtmService atmService;

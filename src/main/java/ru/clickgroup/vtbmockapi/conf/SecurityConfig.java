@@ -14,12 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.clickgroup.vtbmockapi.services.jwt.JwtFilter;
-
-import java.util.List;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;;import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -51,49 +47,47 @@ public class SecurityConfig {
             log.info(addresses[i].getHostName() + ": " + addresses[i].getHostAddress());
         }
      */
-
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests(auth ->
-                        auth
-                                .requestMatchers(AUTH_WHITELIST).permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .anyRequest().authenticated()
+        http.
+                csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> {
+                })
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(AUTH_WHITELIST)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
+                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
-                .httpBasic().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.cors().disable();
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable);
+//        http.cors().disable();
         return http.build();
     }
 
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        final CorsConfiguration configuration = new CorsConfiguration();
+//
+////        configuration.setAllowedOrigins(ImmutableList.of("https://www.yourdomain.com")); // www - obligatory
+////        configuration.setAllowedOrigins(List.of("*"));
+//        configuration.setAllowedOriginPatterns(List.of("*","http://*","https://*","http://localhost:3000", "http://localhost:5173"));  //set access from all domains
+//        configuration.setAllowedMethods(List.of("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"
+//        ));
+//        configuration.setAllowCredentials(true);
+//        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers",  "X-Requested-With", "requestId", "Correlation-Id"));
+//        configuration.setExposedHeaders(List.of("Authorization"));
+//
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//
+//        return source;
+//    }
+
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        final CorsConfiguration configuration = new CorsConfiguration();
-
-//        configuration.setAllowedOrigins(ImmutableList.of("https://www.yourdomain.com")); // www - obligatory
-//        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedOriginPatterns(List.of("*","http://*","https://*","http://localhost:3000"));  //set access from all domains
-        configuration.setAllowedMethods(List.of("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"
-        ));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers",  "X-Requested-With", "requestId", "Correlation-Id"));
-        configuration.setExposedHeaders(List.of("Authorization"));
-
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
-
-@Bean
-public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
 }
