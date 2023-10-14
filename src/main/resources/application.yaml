@@ -1,1 +1,10 @@
 server.port: 9012
+server.forward-headers-strategy: framework
+
+spring:
+  jpa:
+    show-sql: true
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.ddl-auto: update
+
+auth.whitelist: /error /v2/api-docs/** /v3/api-docs/** /swagger-resources/** /favicon.ico /swagger-ui.html /swagger-ui/** / /auth/email /auth/phone /actuator/**

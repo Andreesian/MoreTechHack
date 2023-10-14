@@ -2,7 +2,7 @@ package ru.clickgroup.vtbmockapi.domain.atm;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+//import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "atm")
 @Data
-@RepositoryRestResource
+//@RepositoryRestResource
 public class AtmEntity {
 
     @Id
