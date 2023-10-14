@@ -20,7 +20,7 @@ public class FalconService {
             "\"category\":\"\"\n" +
             "}\n" +
             "action can be only \"find_atm\", \"find_office\" or \"frequently_visited_places\". always default to those closest actions\n" +
-            "category can be only none, blind or qrRead or none";
+            "category can be only none, blind or qrRead or wheelchair";
     private final RestTemplate restTemplate;
     public String getActionAndCategory(Query data) {
         data.setText(FalconService.responseTemplate + data.getText());
