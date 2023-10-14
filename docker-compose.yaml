@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  magic-man:
+    image: more-tech-backend:latest
+    container_name: magic-man
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://188.120.235.15:5432/vtbmock
+      SPRING_DATASOURCE_USERNAME: flareon
+      SPRING_DATASOURCE_PASSWORD: Byzb4QHquHjiyNN
+      JWT_SECRET: mymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecret
+      SERVICES_FALCON_URL: http://localhost:5000
+    ports:
+      - 9092:9092
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - more-tech-backend-network
+
+networks:
+  magic-man:
+    name: more-tech-backend-network

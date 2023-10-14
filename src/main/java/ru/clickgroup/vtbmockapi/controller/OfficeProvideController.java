@@ -2,6 +2,7 @@ package ru.clickgroup.vtbmockapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 //import ru.clickgroup.vtbmockapi.domain.office.OfficeEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/offices")
+@Tag( name = "OFFICE")
 public class OfficeProvideController {
 
     @Autowired
