@@ -10,13 +10,13 @@ import ru.clickgroup.vtbmockapi.repo.OfficeRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Offices")
+@RequestMapping("offices")
 public class OfficeProvideController {
 
-    private OfficeRepository OfficeRepository;
+    @Autowired
+    private OfficeRepository officeRepository;
 
     @GetMapping
-    public List<OfficeEntity> getAllOffices() {
-        return OfficeRepository.findAll();
+    public List<OfficeEntity> getAllOffices() {return officeRepository.findAll();
     }
 }
