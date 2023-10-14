@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://188.120.235.15:5432/vtbmock
+    username: ...
+    password: ...
+
+jwt.secret: mymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecretmymagicmanjwtsecret
+
+
+services:
+  falcon:
+    url: http://localhost:5000

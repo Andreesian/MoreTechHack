@@ -33,3 +33,4 @@ build/
 .vscode/
 cookies_snapshot/andresiandd@gmail.com.json
 /moretechbackendlatest.tar
+src/main/resources/application-local.yaml
