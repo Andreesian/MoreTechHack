@@ -3,6 +3,7 @@ package ru.clickgroup.vtbmockapi.dto;
 public class AtmServiceData {
     private String serviceCapability;
     private String serviceActivity;
+
     // Геттеры и сеттеры
 
 
