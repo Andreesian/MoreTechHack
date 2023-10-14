@@ -79,11 +79,16 @@ public class AuthService {
     }
 
     public AuthSuccessOut authNewUser(UserRegistrationDto urd) {
-        throw new NotImplementedException();
+        UserEntity ue = userEntityRepository.save(convert(urd));
+        return createResponseByUser(ue);
     }
 
-//    UserEntity conver(UserRegistrationDto urd){
-//        UserEntity ue = new UserEntity();
-//        ue.setEmail(urd.ged);
-//    }
+    UserEntity convert(UserRegistrationDto urd){
+        UserEntity ue = new UserEntity();
+        ue.setEmail(urd.getEmail());
+        ue.setPhoneNumber(urd.getPhoneNumber());
+        ue.setName(urd.getName());
+        ue.setLastName(urd.getLastName());
+        ue.setPassword(passwordEncoder.encode(urd.getPassword()));
+    }
 }
