@@ -1,8 +1,5 @@
 package ru.clickgroup.vtbmockapi.dto;
 
-import ru.clickgroup.vtbmockapi.domain.atm.AtmService;
-
-import java.util.List;
 import java.util.Map;
 
 public class AtmData {

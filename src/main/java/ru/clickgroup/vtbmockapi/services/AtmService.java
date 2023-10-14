@@ -4,7 +4,7 @@ package ru.clickgroup.vtbmockapi.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.clickgroup.vtbmockapi.domain.atm.AtmEntity;
-import ru.clickgroup.vtbmockapi.repo.AtmRepository;
+import ru.clickgroup.vtbmockapi.repo.AtmEntityRepository;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AtmService {
 
-    private final AtmRepository atmRepository;
+    private final AtmEntityRepository atmRepository;
 
 
     public List<AtmEntity> getAllAtms() {
