@@ -6,6 +6,6 @@ import ru.clickgroup.vtbmockapi.domain.atm.AtmEntity;
 
 import java.util.List;
 @Repository
-public abstract class AtmRepository implements JpaRepository<AtmEntity, Long> {
-
+public interface AtmRepository extends JpaRepository<AtmEntity, Long> {
+    List<AtmEntity> findAll();
 }
